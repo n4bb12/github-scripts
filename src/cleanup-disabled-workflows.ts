@@ -17,8 +17,8 @@ for (const workflow of disabledWorkflows) {
       [
         "Deleting",
         `workflow=${chalk.red(workflow.name)}`,
+        `run=${chalk.red(run.name)}`,
         `created_at=${chalk.red(run.created_at)}`,
-        `status=${chalk.red(run.conclusion)}`,
         `run=${chalk.red(trimMessage(run.head_commit.message))}`,
       ].join(" "),
     )
