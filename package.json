@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "cleanup-disabled-workflows": "ts-node-esm src/cleanup-disabled-workflows.ts",
+    "cleanup-stale-pr-deployments": "ts-node-esm src/cleanup-stale-pr-deployments.ts",
     "format": "prettier --write ."
   },
   "dependencies": {

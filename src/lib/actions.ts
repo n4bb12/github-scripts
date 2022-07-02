@@ -1,5 +1,9 @@
+import { Endpoints } from "@octokit/types"
 import { octokit, owner, repo } from "./config.js"
-import { Workflow, WorkflowRun } from "./types.js"
+
+export type Workflow = Endpoints["GET /repos/{owner}/{repo}/actions/workflows"]["response"]["data"]["workflows"][0]
+export type WorkflowRun =
+  Endpoints["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"]["response"]["data"]["workflow_runs"][0]
 
 export async function getWorkflows() {
   // https://octokit.github.io/rest.js/v18#actions-list-repo-workflows

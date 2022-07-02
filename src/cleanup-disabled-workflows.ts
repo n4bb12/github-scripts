@@ -3,7 +3,7 @@ import { deleteWorkflowRun, getWorkflowRuns, getWorkflows } from "./lib/actions.
 import { trimMessage } from "./lib/log.js"
 
 const workflows = await getWorkflows()
-const disabledWorkflows = workflows.filter((item) => item.state === "disabled_manually")
+const disabledWorkflows = workflows.filter((workflow) => workflow.state === "disabled_manually")
 
 for (const workflow of disabledWorkflows) {
   const runs = await getWorkflowRuns(workflow)
