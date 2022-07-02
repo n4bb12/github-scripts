@@ -1,6 +1,7 @@
 import "dotenv/config"
 
 import got from "got"
+import chalk from "chalk"
 
 function getEnv(name: string) {
   const value = process.env[name]
@@ -39,7 +40,7 @@ async function getWorkflowRuns(workflow: any): Promise<any[]> {
 }
 
 async function deleteWorkflowRun(workflow: any, run: any) {
-  console.log(`Deleting workflow=${workflow.name} run=${run.id}`)
+  console.log(`Deleting workflow=${chalk.red(workflow.name)} run=${chalk.red(run.id)}`)
   const url = `runs/${run.id}`
   await http.delete(url)
 }
@@ -47,9 +48,7 @@ async function deleteWorkflowRun(workflow: any, run: any) {
 async function main() {
   const workflows = await getWorkflows()
 
-  const disabledWorkflows = workflows.filter(
-    (w) => w.state === "disabled_manually",
-  )
+  const disabledWorkflows = workflows.filter((w) => w.state === "disabled_manually")
 
   for (const workflow of disabledWorkflows) {
     while (true) {
@@ -59,6 +58,9 @@ async function main() {
         break
       }
 
+      console.log("--------------------------------------------------")
+      console.log(`Deleting ${chalk.red(runs.length)} runs for workflow ${chalk.red(workflow.name)}`)
+      console.log("--------------------------------------------------")
       for (const run of runs) {
         await deleteWorkflowRun(workflow, run)
       }
