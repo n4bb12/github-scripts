@@ -1,5 +1,6 @@
 import chalk from "chalk"
 import { deleteWorkflowRun, getWorkflowRuns, getWorkflows } from "./lib/actions.js"
+import { trimMessage } from "./lib/log.js"
 
 async function main() {
   const workflows = await getWorkflows()
@@ -12,8 +13,17 @@ async function main() {
     console.log(`Deleting ${chalk.red(runs.length)} runs for workflow ${chalk.red(workflow.name)}`)
     console.log("--------------------------------------------------")
 
-    for (const run of runs) {
-      console.log(`Deleting workflow=${chalk.red(workflow.name)} run=${chalk.red(run.id)}`)
+    for (const run of runs.sort((a, b) => a.created_at.localeCompare(b.created_at))) {
+      console.log(
+        [
+          "Deleting",
+          `workflow=${chalk.red(workflow.name)}`,
+          `created_at=${chalk.red(run.created_at)}`,
+          `status=${chalk.red(run.conclusion)}`,
+          `run=${chalk.red(trimMessage(run.head_commit.message))}`,
+        ].join(" "),
+      )
+
       await deleteWorkflowRun(workflow, run)
     }
   }
