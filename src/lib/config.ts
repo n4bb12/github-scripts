@@ -9,7 +9,6 @@ function getEnv(name: string) {
   return value
 }
 
-export const apiBaseUrl = "https://api.github.com"
 export const owner = getEnv("GITHUB_OWNER")
 export const repo = getEnv("GITHUB_REPO")
 export const token = getEnv("GITHUB_TOKEN")
