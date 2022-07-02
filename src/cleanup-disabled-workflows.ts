@@ -1,11 +1,6 @@
-import { Endpoints } from "@octokit/types"
 import chalk from "chalk"
-import "dotenv/config"
 import { octokit, owner, repo } from "./config.js"
-
-type Workflow = Endpoints["GET /repos/{owner}/{repo}/actions/workflows"]["response"]["data"]["workflows"][0]
-type WorkflowRun =
-  Endpoints["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"]["response"]["data"]["workflow_runs"][0]
+import { Workflow, WorkflowRun } from "./types.js"
 
 async function getWorkflows() {
   // https://octokit.github.io/rest.js/v18#actions-list-repo-workflows
