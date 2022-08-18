@@ -24,7 +24,6 @@
     "octokit": "^2.0.7"
   },
   "devDependencies": {
-    "@octokit/types": "^7.1.0",
     "@types/node": "^18.7.6",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",

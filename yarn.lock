@@ -42,7 +42,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@n4bb12/github-scripts@workspace:."
   dependencies:
-    "@octokit/types": ^7.1.0
     "@types/node": ^18.7.6
     chalk: ^5.0.1
     dotenv: ^16.0.1
@@ -353,7 +352,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/types@npm:^7.0.0, @octokit/types@npm:^7.1.0":
+"@octokit/types@npm:^7.0.0":
   version: 7.1.0
   resolution: "@octokit/types@npm:7.1.0"
   dependencies:

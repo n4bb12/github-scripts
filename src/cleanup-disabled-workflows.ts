@@ -1,28 +1,33 @@
 import chalk from "chalk"
 import { deleteWorkflowRun, getWorkflowRuns, getWorkflows } from "./lib/actions.js"
 import { trimMessage } from "./lib/log.js"
+import { getRepoNamesToProcess } from "./lib/repos.js"
 
-const workflows = await getWorkflows()
-const disabledWorkflows = workflows.filter((workflow) => workflow.state === "disabled_manually")
+for (const repoName of await getRepoNamesToProcess()) {
+  console.log(`Repository: ${repoName}`)
 
-for (const workflow of disabledWorkflows) {
-  const runs = await getWorkflowRuns(workflow)
+  const workflows = await getWorkflows(repoName)
+  const disabledWorkflows = workflows.filter((workflow) => workflow.state === "disabled_manually")
 
-  console.log("--------------------------------------------------")
-  console.log(`Deleting ${chalk.red(runs.length)} runs for workflow ${chalk.red(workflow.name)}`)
-  console.log("--------------------------------------------------")
+  for (const workflow of disabledWorkflows) {
+    console.log(`  Workflow: ${workflow.name}`)
 
-  for (const run of runs.sort((a, b) => a.created_at.localeCompare(b.created_at))) {
-    console.log(
-      [
-        "Deleting",
-        `workflow=${chalk.red(workflow.name)}`,
-        `run=${chalk.red(run.name)}`,
-        `created_at=${chalk.red(run.created_at)}`,
-        `run=${chalk.red(trimMessage(run.head_commit.message))}`,
-      ].join(" "),
-    )
+    const runs = await getWorkflowRuns(repoName, workflow)
 
-    await deleteWorkflowRun(workflow, run)
+    console.log(`    Deleting ${chalk.red(runs.length)} runs...`)
+
+    for (const run of runs.sort((a, b) => a.created_at.localeCompare(b.created_at))) {
+      console.log(
+        [
+          "Deleting",
+          `workflow=${chalk.red(repoName, workflow.name)}`,
+          `run=${chalk.red(run.name)}`,
+          `created_at=${chalk.red(run.created_at)}`,
+          `run=${chalk.red(trimMessage(run.head_commit.message))}`,
+        ].join(" "),
+      )
+
+      await deleteWorkflowRun(repoName, run)
+    }
   }
 }

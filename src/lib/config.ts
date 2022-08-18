@@ -1,16 +1,11 @@
 import "dotenv/config"
 import { Octokit } from "octokit"
+import { getEnv, getEnvOrFail } from "./env.js"
 
-function getEnv(name: string) {
-  const value = process.env[name]
-  if (!value) {
-    throw new Error("Please set " + name)
-  }
-  return value
+export const config = {
+  org: getEnvOrFail("GITHUB_ORG"),
+  repos: getEnv("GITHUB_REPOS"),
+  token: getEnvOrFail("GITHUB_TOKEN"),
 }
 
-export const owner = getEnv("GITHUB_OWNER")
-export const repo = getEnv("GITHUB_REPO")
-export const token = getEnv("GITHUB_TOKEN")
-
-export const octokit = new Octokit({ auth: token })
+export const octokit = new Octokit({ auth: config.token })
